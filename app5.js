@@ -31,17 +31,31 @@ app.get("/janken", (req, res) => {
   let hand = req.query.hand;
   let win = Number( req.query.win );
   let total = Number( req.query.total );
-  console.log( {hand, win, total});
+  console.log( {hand, win, total});//わからないことがあったらこのように表示させるようにする
   const num = Math.floor( Math.random() * 3 + 1 );
   let cpu = '';
   if( num==1 ) cpu = 'グー';
   else if( num==2 ) cpu = 'チョキ';
   else cpu = 'パー';
   // ここに勝敗の判定を入れる
+  let judgement = '';
+  // 複数の条件を組み合わせるために||(論理和演算子)を用いる
+  if((cpu == 'グー' && hand == 'パー') ||
+     (cpu == 'チョキ' && hand == 'グー') ||
+     (cpu == 'パー' && hand == 'チョキ')){
+      judgement = '勝ち';
+      win += 1;
+  }else if((cpu == 'グー' && hand == 'グー') ||
+           (cpu == 'チョキ' && hand == 'チョキ') ||
+           (cpu == 'パー' && hand == 'パー')){
+          judgement = 'あいこ';
+  }else judgement = '負け';
+
+  total +=1;
   // 今はダミーで人間の勝ちにしておく
-  let judgement = '勝ち';
-  win += 1;
-  total += 1;
+  //let judgement = '勝ち';
+  //win += 1;
+  //total += 1;
   const display = {
     your: hand,
     cpu: cpu,
