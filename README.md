@@ -38,5 +38,6 @@ start --> if
 if -->|yes| win
 win --> end1
 if -->|no| loose
+loose --> end1
 ```
 
