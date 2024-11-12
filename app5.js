@@ -66,4 +66,17 @@ app.get("/janken", (req, res) => {
   res.render( 'janken', display );
 });
 
+app.get("/question", (req, res) => {
+  let score=0;
+
+  if( req.query.test1 ) score -= 20;
+  if( req.query.test2 ) score += 20;
+  if( req.query.test3 ) score += 30;
+  if( req.query.test4 ) score -= 30;
+  if( req.query.test5 ) score -= 50;
+  if( req.query.test6 ) score += 50;
+
+  res.render( 'question', {score: score});
+})
+
 app.listen(8080, () => console.log("Example app listening on port 8080!"));
