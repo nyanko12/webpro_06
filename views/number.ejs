@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>ちょうどいい場所を見極めろ</title>
+</head>
+<body>
+    <p><%= answer %>の位置に合わせてください</p>
+    <p>結果は<%= judgement %>でした</p>
+    <form action="/number" method="get">
+        <input type="range" name="range" id="range"><br>
+        <input type="submit" value="送信">
+    </form>
+</body>
+</html>

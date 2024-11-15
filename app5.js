@@ -1,5 +1,13 @@
 const express = require("express");
+const session = require("express-session");
 const app = express();
+
+app.use(session({
+  secret: 'nyanko',   
+  resave: false,
+  saveUninitialized: true,     
+}));
+
 
 app.set('view engine', 'ejs');
 app.use("/public", express.static(__dirname + "/public"));
@@ -77,6 +85,22 @@ app.get("/question", (req, res) => {
   if( req.query.test6 ) score += 50;
 
   res.render( 'question', {score: score});
+})
+
+app.get("/number", (req, res) => {
+  if(!req.session.answer){
+    req.session.answer = Math.floor(Math.random() * 100 + 1);
+  }
+
+  const value = req.query.range;
+  const answer = req.session.answer;
+  let judgement = '';
+  if(value == answer) judgement = 'ピッタリ';
+  else {
+    judgement = value - answer;
+  }
+
+  res.render( 'number', {answer: answer.toString() , judgement: judgement});
 })
 
 app.listen(8080, () => console.log("Example app listening on port 8080!"));
