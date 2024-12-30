@@ -1,5 +1,8 @@
+"use strict";
 const express = require("express");
 const app = express();
+
+let bbs = [];  // 本来はDBMSを使用するが，今回はこの変数にデータを蓄える
 
 app.set('view engine', 'ejs');
 app.use("/public", express.static(__dirname + "/public"));
@@ -79,8 +82,9 @@ app.post("/add", (req, res) => {
   res.json( {answer: num1+num2} );
 });
 
+// これより下はBBS関係
 app.post("/check", (req, res) => {
-  //　本来はここでDBMSに問い合わせる
+  // 本来はここでDBMSに問い合わせる
   res.json( {number: bbs.length });
 });
 

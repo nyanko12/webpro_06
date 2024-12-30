@@ -1,5 +1,8 @@
+"use strict";
 const express = require("express");
 const app = express();
+
+let bbs = [];  // 本来はDBMSを使用するが，今回はこの変数にデータを蓄える
 
 app.set('view engine', 'ejs');
 app.use("/public", express.static(__dirname + "/public"));
@@ -79,8 +82,9 @@ app.post("/add", (req, res) => {
   res.json( {answer: num1+num2} );
 });
 
+// これより下はBBS関係
 app.post("/check", (req, res) => {
-  //　本来はここでDBMSに問い合わせる
+  // 本来はここでDBMSに問い合わせる
   res.json( {number: bbs.length });
 });
 
@@ -99,6 +103,31 @@ app.post("/post", (req, res) => {
   // 本来はここでDBMSに保存する
   bbs.push( { name: name, message: message } );
   res.json( {number: bbs.length } );
+});
+
+app.get("/bbs", (req,res) => {
+    console.log("GET /BBS");
+    res.json( {test: "GET /BBS" });
+});
+
+app.post("/bbs", (req,res) => {
+    console.log("POST /BBS");
+    res.json( {test: "POST /BBS"});
+})
+
+app.get("/bbs/:id", (req,res) => {
+    console.log( "GET /BBS/" + req.params.id );
+    res.json( {test: "GET /BBS/" + req.params.id });
+});
+
+app.put("/bbs/:id", (req,res) => {
+    console.log( "PUT /BBS/" + req.params.id );
+    res.json( {test: "PUT /BBS/" + req.params.id });
+});
+
+app.delete("/bbs/:id", (req,res) => {
+    console.log( "DELETE /BBS/" + req.params.id );
+    res.json( {test: "DELETE /BBS/" + req.params.id });
 });
 
 app.listen(8080, () => console.log("Example app listening on port 8080!"));

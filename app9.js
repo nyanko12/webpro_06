@@ -1,5 +1,8 @@
+"use strict";
 const express = require("express");
 const app = express();
+
+let bbs = [];  // 本来はDBMSを使用するが，今回はこの変数にデータを蓄える
 
 app.set('view engine', 'ejs');
 app.use("/public", express.static(__dirname + "/public"));
@@ -79,8 +82,9 @@ app.post("/add", (req, res) => {
   res.json( {answer: num1+num2} );
 });
 
+// これより下はBBS関係
 app.post("/check", (req, res) => {
-  //　本来はここでDBMSに問い合わせる
+  // 本来はここでDBMSに問い合わせる
   res.json( {number: bbs.length });
 });
 
@@ -96,9 +100,58 @@ app.post("/post", (req, res) => {
   const name = req.body.name;
   const message = req.body.message;
   console.log( [name, message] );
+  const id = Date.now();
+  const timestamp = new Date();
+  const isoString = timestamp.toISOString();
   // 本来はここでDBMSに保存する
-  bbs.push( { name: name, message: message } );
+  bbs.push( {id:id, name: name, message: message ,timestamp:timestamp, likes:0} );
   res.json( {number: bbs.length } );
 });
 
+app.post("/like", (req, res) => {
+    const post_id = Number(req.body.id);
+    const post = bbs.find(bbs => bbs.id == post_id);
+    if (post) {
+        if (!post.likes) post.likes = 0;  
+        post.likes += 1;  
+        res.json({ success:true, likes:post.likes });
+    }else res.json({ success:false, message:"投稿が見つかりません" });
+});
+
+app.post("/delete", (req, res) => {
+    const post_id = Number(req.body.id);
+    for(let i=0; i<bbs.length; i++){
+        if(bbs[i].id==post_id){
+            bbs.splice(i,1);
+            return res.json({success:true});
+        }
+    }
+});
+
+app.get("/bbs", (req,res) => {
+    console.log("GET /BBS");
+    res.json( {test: "GET /BBS" });
+});
+
+app.post("/bbs", (req,res) => {
+    console.log("POST /BBS");
+    res.json( {test: "POST /BBS"});
+})
+
+app.get("/bbs/:id", (req,res) => {
+    console.log( "GET /BBS/" + req.params.id );
+    res.json( {test: "GET /BBS/" + req.params.id });
+});
+
+app.put("/bbs/:id", (req,res) => {
+    console.log( "PUT /BBS/" + req.params.id );
+    res.json( {test: "PUT /BBS/" + req.params.id });
+});
+
+app.delete("/bbs/:id", (req,res) => {
+    console.log( "DELETE /BBS/" + req.params.id );
+    res.json( {test: "DELETE /BBS/" + req.params.id });
+});
+
+// サーバー起動
 app.listen(8080, () => console.log("Example app listening on port 8080!"));
