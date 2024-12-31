@@ -100,9 +100,10 @@ app.post("/post", (req, res) => {
   const name = req.body.name;
   const message = req.body.message;
   console.log( [name, message] );
+  //　リアルタイムの表示
   const id = Date.now();
   const timestamp = new Date();
-  const isoString = timestamp.toISOString();
+  const isoString = timestamp.toLocaleString();
   // 本来はここでDBMSに保存する
   bbs.push( {id:id, name: name, message: message ,timestamp:timestamp, likes:0} );
   res.json( {number: bbs.length } );

@@ -70,53 +70,50 @@ document.querySelector('#check').addEventListener('click', () => {
             .then( (response) => {
                 number += response.messages.length;
                 for( let mes of response.messages ) {
-                    createPostElement(mes);
+                    let cover = document.createElement('div');
+                    cover.className = 'cover';
+                    //　削除機能といいね機能を作動させるためにidを付与している
+                    cover.id = 'post-' + mes.id;
+                    let name_area = document.createElement('span');
+                    name_area.className = 'name';
+                    name_area.innerText = mes.name;
+                    let mes_area = document.createElement('span');
+                    mes_area.className = 'mes';
+                    mes_area.innerText = mes.message;
+                    
+                    //　リアルタイムの表示
+                    let timestamp_area = document.createElement('span');
+                    timestamp_area.className = 'timestamp';
+                    timestamp_area.innerText = new Date(mes.timestamp).toLocaleString();
+
+                    // 削除機能
+                    let delete_btn = document.createElement('button');
+                    delete_btn.innerText = '削除';
+                    delete_btn.addEventListener('click', () => {
+                        delete_post(mes.id);
+                    });
+
+                    // いいね機能
+                    let like_btn = document.createElement('button');
+                    if (mes.likes==undefined) mes.likes=0;
+                    like_btn.innerText = 'いいね'+mes.likes;  
+                    like_btn.addEventListener('click', () => {
+                        like_post(mes.id);
+                    });
+
+                    cover.appendChild(name_area);
+                    cover.appendChild(mes_area);
+                    //　追加した部分
+                    cover.appendChild(timestamp_area);  
+                    cover.appendChild(like_btn);  
+                    cover.appendChild(delete_btn);  
+
+                    bbs.appendChild(cover);
                 }
             });
         }
     });
 });
-
-function createPostElement(mes) {
-    let cover = document.createElement('div');
-    cover.className = 'cover';
-    cover.id = 'post-' + mes.id;
-
-    let name_area = document.createElement('span');
-    name_area.className = 'name';
-    name_area.innerText = mes.name;
-
-    let mes_area = document.createElement('span');
-    mes_area.className = 'mes';
-    mes_area.innerText = mes.message;
-
-    let timestamp_area = document.createElement('span');
-    timestamp_area.className = 'timestamp';
-    timestamp_area.innerText = new Date(mes.timestamp).toLocaleString();
-
-    // 削除機能
-    let delete_btn = document.createElement('button');
-    delete_btn.innerText = '削除';
-    delete_btn.addEventListener('click', () => {
-        delete_post(mes.id);
-    });
-
-    // いいね機能
-    let like_btn = document.createElement('button');
-    if (mes.likes==undefined) mes.likes=0;
-    like_btn.innerText = 'いいね'+mes.likes;  
-    like_btn.addEventListener('click', () => {
-        like_post(mes.id);
-    });
-
-    cover.appendChild(name_area);
-    cover.appendChild(mes_area);
-    cover.appendChild(timestamp_area);  
-    cover.appendChild(like_btn);  
-    cover.appendChild(delete_btn);  
-
-    bbs.appendChild(cover);
-}
 
 // 投稿削除機能の処理
 function delete_post(id) {
@@ -165,3 +162,4 @@ function like_post(id) {
             }
         })
 }
+
