@@ -13,7 +13,7 @@ document.querySelector('#post').addEventListener('click', () => {
             'Content-Type': 'application/x-www-form-urlencoded'
         }
     };
-    console.log( params );
+    //console.log( params );
     const url = "/post";
     fetch( url, params )
     .then( (response) => {
@@ -23,7 +23,7 @@ document.querySelector('#post').addEventListener('click', () => {
         return response.json();
     })
     .then( (response) => {
-        console.log( response );
+        //console.log( response );
         document.querySelector('#message').value = "";
     });
 });
@@ -48,9 +48,9 @@ document.querySelector('#check').addEventListener('click', () => {
     })
     .then( (response) => {
         let value = response.number;
-        console.log( value );
+        //console.log( value );
 
-        console.log( number );
+        //console.log( number );
         if( number != value ) {
             const params = {
                 method: "POST",
