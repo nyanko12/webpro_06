@@ -157,7 +157,7 @@ function like_post(id) {
         })
         .then((response) => {
             if (response.success) {
-                const like_btn=document.querySelector('#post-'+id+' button');
+                const like_btn=document.querySelector('#post-'+id+' button');//buttonの前の空白が重要
                 like_btn.innerText='いいね'+response.likes;  
             }
         })
