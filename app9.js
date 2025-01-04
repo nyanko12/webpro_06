@@ -17,7 +17,7 @@ app.post("/check", (req, res) => {
 app.post("/read", (req, res) => {
   // 本来はここでDBMSに問い合わせる
   const start = Number( req.body.start );
-  console.log( "read -> " + start );
+  //console.log( "read -> " + start );
   if( start==0 ) res.json( {messages: bbs });
   else res.json( {messages: bbs.slice( start )});
 });
@@ -25,11 +25,10 @@ app.post("/read", (req, res) => {
 app.post("/post", (req, res) => {
   const name = req.body.name;
   const message = req.body.message;
-  console.log( [name, message] );
+  //console.log( [name, message] );
   //　リアルタイムの表示
   const id = Date.now();
   const timestamp = new Date();
-  const isoString = timestamp.toLocaleString();
   // 本来はここでDBMSに保存する
   bbs.push( {id:id, name: name, message: message ,timestamp:timestamp, likes:0} );
   res.json( {number: bbs.length } );
