@@ -34,16 +34,6 @@ app.post("/post", (req, res) => {
   res.json( {number: bbs.length } );
 });
 
-app.post("/like", (req, res) => {
-    const post_id = Number(req.body.id);
-    const post = bbs.find(bbs => bbs.id == post_id);
-    if (post) {
-        if (!post.likes) post.likes = 0;  
-        post.likes += 1;  
-        res.json({ success:true, likes:post.likes });
-    }else res.json({ success:false, message:"投稿が見つかりません" });
-});
-
 app.post("/delete", (req, res) => {
     const post_id = Number(req.body.id);
     for(let i=0; i<bbs.length; i++){
@@ -52,6 +42,16 @@ app.post("/delete", (req, res) => {
             return res.json({success:true});
         }
     }
+});
+
+app.post("/like", (req, res) => {
+  const post_id = Number(req.body.id);
+  const post = bbs.find(bbs => bbs.id == post_id);
+  if (post) {
+      if (!post.likes) post.likes = 0;  
+      post.likes += 1;  
+      res.json({ success:true, likes:post.likes });
+  }else res.json({ success:false, message:"投稿が見つかりません" });
 });
 
 // サーバー起動
